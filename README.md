@@ -92,7 +92,7 @@ One-time donation via PayPal:
 
 ## Other forks
 
-![react-native-oh-library](https://github.com/react-native-oh-library/react-native-autoheight-webview)
+[react-native-oh-library](https://github.com/react-native-oh-library/react-native-autoheight-webview)
 
 ```
   Platform.OS === 'harmony' &&
