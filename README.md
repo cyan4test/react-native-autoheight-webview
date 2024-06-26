@@ -89,3 +89,14 @@ For android, you may have to copy the "Users\UserName\.android\debug.keystore" t
 One-time donation via PayPal:
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/iou90)
+
+## Other forks
+
+![react-native-oh-library](https://github.com/react-native-oh-library/react-native-autoheight-webview)
+
+```
+  Platform.OS === 'harmony' &&
+  Object.assign(defaultProps, {
+    viewportContent: 'width=device-width',
+  });
+```
