@@ -1,11 +1,11 @@
-import React, {useState, useEffect, forwardRef} from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 
-import {StyleSheet, Platform} from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
-import {ViewPropTypes} from 'deprecated-react-native-prop-types';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 import PropTypes from 'prop-types';
 
-import {WebView} from 'react-native-webview';
+import { WebView } from 'react-native-webview';
 
 import {
   topic,
@@ -15,8 +15,30 @@ import {
   shouldUpdate,
 } from './utils';
 
+let defaultProps = {
+  showsVerticalScrollIndicator: false,
+  showsHorizontalScrollIndicator: false,
+  originWhitelist: ['*'],
+};
+
+if (Platform.OS === 'android') {
+  defaultProps = {
+    ...defaultProps,
+    scalesPageToFit: false,
+  };
+}
+
+if (Platform.OS === 'ios') {
+  defaultProps = {
+    ...defaultProps,
+    viewportContent: 'width=device-width',
+  };
+}
+
 const AutoHeightWebView = React.memo(
   forwardRef((props, ref) => {
+    props = { ...defaultProps, ...props };
+
     const {
       style,
       onMessage,
@@ -39,12 +61,12 @@ const AutoHeightWebView = React.memo(
             onMessage && onMessage(event);
             return;
           }
-          const {height, width, zoomedin} = data;
+          const { height, width, zoomedin } = data;
           !scrollEnabled &&
             scrollEnabledWithZoomedin &&
             setScrollable(!!zoomedin);
-          const {height: previousHeight, width: previousWidth} = size;
-          isSizeChanged({height, previousHeight, width, previousWidth}) &&
+          const { height: previousHeight, width: previousWidth } = size;
+          isSizeChanged({ height, previousHeight, width, previousWidth }) &&
             setSize({
               height,
               width,
@@ -62,9 +84,9 @@ const AutoHeightWebView = React.memo(
         ? scrollable
         : scrollEnabled;
 
-    const {currentSource, script} = reduceData(props);
+    const { currentSource, script } = reduceData(props);
 
-    const {width, height} = size;
+    const { width, height } = size;
     useEffect(() => {
       onSizeUpdated &&
         onSizeUpdated({
@@ -90,7 +112,7 @@ const AutoHeightWebView = React.memo(
       scrollEnabled: currentScrollEnabled,
     });
   }),
-  (prevProps, nextProps) => !shouldUpdate({prevProps, nextProps}),
+  (prevProps, nextProps) => !shouldUpdate({ prevProps, nextProps }),
 );
 
 AutoHeightWebView.propTypes = {
@@ -113,24 +135,6 @@ AutoHeightWebView.propTypes = {
   scalesPageToFit: PropTypes.bool,
   source: PropTypes.object,
 };
-
-let defaultProps = {
-  showsVerticalScrollIndicator: false,
-  showsHorizontalScrollIndicator: false,
-  originWhitelist: ['*'],
-};
-
-Platform.OS === 'android' &&
-  Object.assign(defaultProps, {
-    scalesPageToFit: false,
-  });
-
-Platform.OS === 'ios' &&
-  Object.assign(defaultProps, {
-    viewportContent: 'width=device-width',
-  });
-
-AutoHeightWebView.defaultProps = defaultProps;
 
 const styles = StyleSheet.create({
   webView: {
